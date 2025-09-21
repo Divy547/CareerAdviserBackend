@@ -7,7 +7,7 @@ import os
 from dotenv import load_dotenv
 import torch
 import pickle
-from pathlib import Path
+
 load_dotenv()
 
 
