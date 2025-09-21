@@ -17,17 +17,21 @@ import os
 sys.path.append(os.path.abspath(".."))
 from train import RoleClassifier
 
+device = torch.device("cpu")
 
 with open("models/role_map.pkl", "rb") as f:
     role_map = pickle.load(f)
 
-embedder = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+# embedder = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+embedder = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2", device="cpu") # CPU
 
 # Load classifier
 input_dim = 384
 num_classes = len(role_map)
 model = RoleClassifier(input_dim, num_classes)
-model.load_state_dict(torch.load("models/role_classifier.pth"))
+# model.load_state_dict(torch.load("models/role_classifier.pth"))
+model.load_state_dict(torch.load("models/role_classifier.pth", map_location=device)) # CPU
+model.to(device) # CPU
 model.eval()
 
 
@@ -39,7 +43,7 @@ all_skills = [
 ]
 
 # Configuring Gemini
-API_KEY = os.getenv("GEMINI_API_KEY")
+API_KEY = os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=API_KEY)
 llm = genai.GenerativeModel("gemini-2.5-flash")
 
@@ -50,7 +54,7 @@ app = FastAPI()
 # Handling cors
 origins = [
     "http://localhost:3000",
-    "https://career-adviser-lovat.vercel.app/",
+    "https://career-adviser-lovat.vercel.app/"
 ]
 
 app.add_middleware(
@@ -73,7 +77,8 @@ def predict_role(data: UserInput):
 
     top_roles, probab = [], []
     if skills:
-        user_embedding = embedder.encode([skills_text], convert_to_tensor=True)
+        # user_embedding = embedder.encode([skills_text], convert_to_tensor=True)
+        user_embedding = embedder.encode([skills_text], convert_to_tensor=True).to(device) # CPU
 
         with torch.inference_mode():
             logits = model(user_embedding)
@@ -130,11 +135,6 @@ Please provide a JSON response with the following predefined fields:
 Even if no skills are provided, fill all fields with reasonable suggestions.
 Respond **only in JSON format**.
 """
-
-    
-
-
-
 
     response = llm.generate_content(prompt)
 
