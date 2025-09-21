@@ -1,0 +1,11 @@
+id,skills,role
+1,"python, pandas, statistics, sql, machine learning, deep learning",Data Scientist
+2,"excel, sql, data visualization, tableau, statistics, reporting",Data Analyst
+3,"html, css, javascript, react, git, responsive design",Frontend Developer
+4,"nodejs, express, databases, api design, authentication, git",Backend Developer
+5,"docker, kubernetes, aws, linux, ci/cd, monitoring",DevOps Engineer
+6,"python, numpy, sql, matplotlib, statistics, data wrangling",Data Scientist
+7,"excel, powerbi, sql, python, dashboards, data storytelling",Data Analyst
+8,"html, css, javascript, vue, tailwind, figma",Frontend Developer
+9,"java, spring, databases, api design, microservices, security",Backend Developer
+10,"terraform, ansible, aws, linux, networking, security",DevOps Engineer
