@@ -54,7 +54,8 @@ app = FastAPI()
 # Handling cors
 origins = [
     "http://localhost:3000",
-    "https://career-adviser-lovat.vercel.app/"
+    "https://career-adviser-lovat.vercel.app",
+    
 ]
 
 app.add_middleware(
